@@ -6,9 +6,9 @@ import (
 )
 
 func main() {
-	cmd := app.NewSchedulerCommand()
+	command := app.NewSchedulerCommand()
 
-	if err := cmd.Execute(); err != nil {
+	if err := command.Execute(); err != nil {
 		slog.Error("error while executing command", "error", err)
 		return
 	}
