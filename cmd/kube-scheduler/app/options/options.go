@@ -29,7 +29,11 @@ func (o *Options) initFlags() {
 		return
 	}
 
-	_ = cliflag.NamedFlagSets{}
+	nfs := cliflag.NewNamedFlagSets()
+	fs := nfs.FlagSet("misc")
+	fs.StringVar(&o.ConfigFile, "config", o.ConfigFile, "The path to the configuration file.")
+	fs.StringVar(&o.WriteConfigTo, "write-config-to", o.WriteConfigTo, "If set, write the configuration values to this file and exit.")
+	fs.StringVar(&o.Master, "master", o.Master, "The address of the Kubernetes API server (overrides any value in kubeconfig)")
 
-	// TODO: set flags.
+	o.Flags = &nfs
 }

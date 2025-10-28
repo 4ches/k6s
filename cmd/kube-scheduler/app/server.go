@@ -1,3 +1,4 @@
+// Package app implements a Server object for running the scheduler.
 package app
 
 import (
