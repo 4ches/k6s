@@ -8,7 +8,6 @@ import (
 func main() {
 	cmd := app.NewSchedulerCommand()
 
-	_ = cmd.Flags()
 	if err := cmd.Execute(); err != nil {
 		slog.Error("error while executing command", "error", err)
 		return

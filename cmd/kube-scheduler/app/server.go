@@ -3,12 +3,15 @@ package app
 
 import (
 	"fmt"
+	"k6s/cmd/kube-scheduler/app/options"
 	"log/slog"
 
 	"github.com/spf13/cobra"
 )
 
 func NewSchedulerCommand() *cobra.Command {
+	opts := options.NewOptions()
+
 	cmd := &cobra.Command{
 		Use: "kube-scheduler",
 		Long: `The Kubernetes scheduler is a control plane process which assigns
@@ -36,6 +39,11 @@ for more information about scheduling and the kube-scheduler component.`,
 		},
 	}
 
-	// TODO: add flags.
+	nfs := opts.Flags
+	fs := cmd.Flags()
+	for _, f := range nfs.FlagSets {
+		fs.AddFlagSet(f)
+	}
+
 	return cmd
 }
