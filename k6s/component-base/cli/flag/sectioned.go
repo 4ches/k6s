@@ -2,16 +2,6 @@ package flag
 
 import "github.com/spf13/pflag"
 
-// NamedFlagSetsOption is a function to configure NamedFlagSets.
-type NamedFlagSetsOption func(*NamedFlagSets)
-
-// WithNormalizeNameFunc returns a NamedFlagSetsOption to set NormalizeNameFunc.
-func WithNormalizeNameFunc(f func(f *pflag.FlagSet, name string) pflag.NormalizedName) NamedFlagSetsOption {
-	return func(nfs *NamedFlagSets) {
-		nfs.normalizeNameFunc = f
-	}
-}
-
 // NamedFlagSets stores named flag sets in the order of calling FlagSet.
 type NamedFlagSets struct {
 	// FlagSets stores the flag sets by name.
@@ -23,8 +13,15 @@ type NamedFlagSets struct {
 	normalizeNameFunc func(f *pflag.FlagSet, name string) pflag.NormalizedName
 }
 
+// WithNormalizeNameFunc returns an option to set NormalizeNameFunc.
+func WithNormalizeNameFunc(f func(f *pflag.FlagSet, name string) pflag.NormalizedName) func(*NamedFlagSets) {
+	return func(nfs *NamedFlagSets) {
+		nfs.normalizeNameFunc = f
+	}
+}
+
 // NewNamedFlagSets creates a named flag sets.
-func NewNamedFlagSets(opts ...NamedFlagSetsOption) NamedFlagSets {
+func NewNamedFlagSets(opts ...func(*NamedFlagSets)) NamedFlagSets {
 	nfs := NamedFlagSets{
 		FlagSets:          make(map[string]*pflag.FlagSet),
 		normalizeNameFunc: pflag.CommandLine.GetNormalizeFunc(),
